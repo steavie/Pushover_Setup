@@ -36,7 +36,7 @@ PUSHOVER_APP_TOKEN="${APP_TOKEN}"
 PUSHOVER_USER_KEY="${USER_KEY}"
 PUSHOVER_DEFAULT_TITLE="${DEFAULT_TITLE}"
 EOF
-chown root:wheel /etc/pushover.env
+chown root:root /etc/pushover.env
 chmod 644 /etc/pushover.env   # alle dürfen lesen, nur root schreiben
 
 # ── /usr/local/bin/push ───────────────────────────────────────────────────────
@@ -79,7 +79,7 @@ else
   exit 1
 fi
 SCRIPT
-chown root:wheel /usr/local/bin/push
+chown root:root /usr/local/bin/push
 chmod 755 /usr/local/bin/push
 xattr -c /usr/local/bin/push 2>/dev/null || true
 
