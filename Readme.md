@@ -1,67 +1,83 @@
-# Pushover – Systemweites Push-Kommando
+# Pushover – Push-Nachrichten vom System verschicken
 
-Einmaliges Setup, danach einfach:
+## Was ist das hier?
 
-```bash
-push "Backup abgeschlossen"
-push "Fehler" "Cronjob ist fehlgeschlagen"
-```
+Dieses Script richtet auf deinem System ein einfaches Kommando namens `push` ein.  
+Damit kannst du von überall – aus dem Terminal, aus Skripten oder aus automatischen Aufgaben (Cronjobs) – **Push-Nachrichten direkt aufs Handy schicken**.
 
-Funktioniert für **root und alle Benutzer**, auch aus Skripten und Cronjobs.
+Zum Beispiel:
+- „Backup abgeschlossen"
+- „Fehler beim Scan"
+- „Server wurde neu gestartet"
+
+Die Nachrichten kommen über den Dienst **[Pushover](https://pushover.net)** – eine kleine App (einmalig ~5 €), die zuverlässig Benachrichtigungen auf iPhone oder Android liefert.
+
+Funktioniert auf **macOS und Linux**.
+
+---
+
+## Was brauche ich dafür?
+
+1. Die **Pushover-App** auf deinem Handy installiert (iOS oder Android)
+2. Einen **kostenlosen Account** auf [pushover.net](https://pushover.net)
+3. Dort zwei Dinge notieren:
+   - **User Key** – steht oben auf der Startseite nach dem Login
+   - **App API Token** – einmalig eine neue „Application" anlegen, dann den Token kopieren
 
 ---
 
 ## Installation
 
+Terminal öffnen und ausführen:
+
 ```bash
 sudo bash install.sh
 ```
 
-Das Script fragt interaktiv nach:
-- **App API Token** → von [pushover.net](https://pushover.net) unter „Your Applications"
-- **User Key** → von [pushover.net](https://pushover.net) oben rechts
-- **Standard-Titel** → wird verwendet wenn nur eine Nachricht ohne Titel angegeben wird
-
-Am Ende wird automatisch eine Testnachricht gesendet.
+Das Script fragt dich nach User Key und App Token, speichert sie sicher auf dem System und sendet am Ende eine Testnachricht. Wenn die Nachricht auf dem Handy ankommt – fertig.
 
 ---
 
 ## Verwendung
 
+Danach reicht im Terminal:
+
 ```bash
-# Nur Nachricht (Standard-Titel wird verwendet)
-push "Server wurde neu gestartet"
+push "Hallo, das ist eine Testnachricht"
+```
 
-# Mit eigenem Titel
-push "Backup" "Backup vom 27.03. erfolgreich"
+Oder mit einem eigenen Titel:
 
-# Aus einem Skript
-if ! some_command; then
-  push "Fehler" "some_command ist fehlgeschlagen"
-fi
+```bash
+push "Backup" "Das Backup vom 27.03. war erfolgreich"
+```
 
-# In einem Cronjob
-0 3 * * * /usr/local/bin/push "Backup" "Nacht-Backup gestartet"
+Auch aus eigenen Skripten heraus:
+
+```bash
+push "Fehler" "Etwas ist schiefgelaufen"
 ```
 
 ---
 
 ## Was wird installiert?
 
-| Datei | Zweck |
-|-------|-------|
-| `/etc/pushover.env` | Tokens (nur root kann schreiben, alle lesen) |
-| `/usr/local/bin/push` | Das push-Kommando |
+| Datei | Wo | Was |
+|-------|----|-----|
+| `push` | `/usr/local/bin/push` | Das Kommando das du tippst |
+| Zugangsdaten | `/etc/pushover.env` | User Key & Token – nur lokal, nicht im Repo |
+
+Die Tokens liegen **nie im Repo** und werden **nicht geteilt**.
 
 ---
 
-## Token ändern
+## Token ändern oder neu setzen
 
 ```bash
 sudo nano /etc/pushover.env
 ```
 
-Keine Skripte müssen angepasst werden – alle Skripte lesen automatisch den neuen Token.
+Alle Skripte die `push` verwenden, nutzen automatisch den neuen Token.
 
 ---
 
